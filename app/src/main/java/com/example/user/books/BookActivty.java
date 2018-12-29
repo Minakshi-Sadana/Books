@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BookActivty extends AppCompatActivity {
     ImageView imageView;
     ArrayList<String> imagePaths=new ArrayList<>();
     private static final int MY_PERMSSIONS=1;
     ViewPager viewPager;
+    String booksFolder="Book";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,10 @@ public class BookActivty extends AppCompatActivity {
         String MEDIA_MOUNTED="mounted";
         String diskState=Environment.getExternalStorageState();
         if(diskState.equals(MEDIA_MOUNTED)){
-            File pictureFolder=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+      //      File pictureFolder=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File pictureFolder=new File(Environment.getExternalStorageDirectory(),booksFolder+"/38689/pages");
             File[] files=pictureFolder.listFiles();
+            Arrays.sort(files);
             imagePaths=new ArrayList<>();
             for(int i=0;i<files.length;i++) {
                 File file = files[i];
