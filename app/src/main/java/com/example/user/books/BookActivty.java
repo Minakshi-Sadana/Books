@@ -27,6 +27,7 @@ public class BookActivty extends AppCompatActivity {
     private static final int MY_PERMSSIONS=1;
     ViewPager viewPager;
     String booksFolder="Book";
+    ArrayList<String> audioPaths=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class BookActivty extends AppCompatActivity {
             getBitmapPublicFile();
             ImageAdapter adapter=new ImageAdapter(this,imagePaths);
             viewPager.setAdapter(adapter);
+            getAudioOnPages();
         }else{
             //Toast.makeText(getApplicationContext(),"Permission not granted",Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(BookActivty.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMSSIONS);
@@ -47,6 +49,7 @@ public class BookActivty extends AppCompatActivity {
     //    Intent intent=new Intent(BookActivty.this,MP3.class);
     //    startActivity(intent);
     }
+
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         switch (requestCode){
@@ -64,6 +67,39 @@ public class BookActivty extends AppCompatActivity {
         }
 
     }
+    private void getAudioOnPages() {
+        String imagePath, audioPath;
+        String MEDIA_MOUNTED="mounted";
+        String diskState=Environment.getExternalStorageState();
+        if(diskState.equals(MEDIA_MOUNTED)){
+            File audioFolder=new File(Environment.getExternalStorageDirectory(),booksFolder+"/38689/audio");
+            File[] audioFiles=audioFolder.listFiles();
+            Arrays.sort(audioFiles);
+            audioPaths=new ArrayList<>();
+            for(int j=0;j<audioFiles.length;j++){
+                File file=audioFiles[j];
+                String path=file.getAbsolutePath();
+                audioPaths.add(path);
+                for(int k=0;k<imagePaths.size();k++){
+                    Log.e("Tag",imagePaths.get(k));
+                    imagePath=imagePaths.get(k);
+                    String nameImage=imagePath.substring(imagePath.lastIndexOf('/'));
+                    String nameImg=nameImage.substring(1,3);
+                    audioPath=audioPaths.get(j);
+                    String nameAudio=audioPath.substring(audioPath.lastIndexOf('/'));
+                    String nameAud=nameAudio.substring(1,3);
+                    if(nameImg.equals(nameAud)){
+                        Log.e("Tag","Attach audio here");
+                    }
+                    else {
+                        Log.e("Tag","Don't attach audio here");
+                    }
+                }
+            }
+
+        }
+    }
+
     private void getBitmapPublicFile() {
         String MEDIA_MOUNTED="mounted";
         String diskState=Environment.getExternalStorageState();
