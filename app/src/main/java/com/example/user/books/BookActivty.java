@@ -37,9 +37,10 @@ public class BookActivty extends AppCompatActivity {
         viewPager=findViewById(R.id.pager);
         if(ContextCompat.checkSelfPermission(BookActivty.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
             getBitmapPublicFile();
+            getAudioOnPages();
             ImageAdapter adapter=new ImageAdapter(this,imagePaths);
             viewPager.setAdapter(adapter);
-            getAudioOnPages();
+
         }else{
             //Toast.makeText(getApplicationContext(),"Permission not granted",Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(BookActivty.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMSSIONS);
@@ -56,8 +57,10 @@ public class BookActivty extends AppCompatActivity {
             case MY_PERMSSIONS:{
                 if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     getBitmapPublicFile();
+                    getAudioOnPages();
                     ImageAdapter adapter=new ImageAdapter(this,imagePaths);
                     viewPager.setAdapter(adapter);
+
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Permission denied",Toast.LENGTH_LONG).show();
@@ -90,9 +93,12 @@ public class BookActivty extends AppCompatActivity {
                     String nameAud=nameAudio.substring(1,3);
                     if(nameImg.equals(nameAud)){
                         Log.e("Tag","Attach audio here");
+                       // ImageAdapter.btnAudio.setVisibility(View.VISIBLE);
+
                     }
                     else {
                         Log.e("Tag","Don't attach audio here");
+
                     }
                 }
             }
